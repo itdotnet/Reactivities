@@ -51,7 +51,7 @@ namespace DatingApp.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public void Delete(int id)
         {
             //await _context.Values.(id);
         }
