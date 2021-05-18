@@ -1,21 +1,18 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
 import {v4 as uuid} from 'uuid';
+import ActivityStore from '../../../app/stores/activityStore';
 
 interface IProbs {
-  setEditMode: (editMode: boolean) => void;
   activity: IActivity;
-  createActivity: (activity: IActivity) => void;
-  editActivity: (activity: IActivity) => void;
 }
 
 export const ActivityForm: React.FC<IProbs> = ({
-  setEditMode,
-  activity: initializeFormState,
-  createActivity,
-  editActivity,
+  activity: initializeFormState
 }) => {
+  const activityStore=useContext(ActivityStore);
+  const {createActivity,editActivity,submitting,cancelFormOpen}=activityStore;
   const initializeForm = () => {
     if (initializeFormState) {
       return initializeFormState;
@@ -96,13 +93,14 @@ export const ActivityForm: React.FC<IProbs> = ({
           value={activity.venue}
         ></Form.Input>
         <Button
+          loading={submitting}
           floated="right"
           positive
           type="submit"
           content="submit"
         ></Button>
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={cancelFormOpen}
           floated="right"
           type="button"
           content="cancel"
